@@ -1,0 +1,15 @@
+version: '2'
+services:
+  client:
+    build: .
+    external_links:
+      - hldslogserver_redis_1
+    networks:
+      - default
+      - hldslogserver_default
+    environment:
+      - REDIS_HOST=redis
+
+networks:
+  hldslogserver_default:
+    external: true
