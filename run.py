@@ -11,6 +11,9 @@ logger.setLevel(logging.DEBUG)
 console = logging.StreamHandler()
 logger.addHandler(console)
 
+from sound import LocalSound
+sound = LocalSound()
+
 from gpio import RPiGPIO
 gpio = RPiGPIO()
 CT_LIGHT = 26
@@ -49,6 +52,7 @@ def hlds_event_machine(event, groups):
         else:
             gpio.on(TS_LIGHT)
             logger.info("Team TERRORIST won game with %d - %d" % (ts_score, ct_score))
+        sound.play('sounds/cs_techno_remix_sample.mp3')
         gpio.on(PARTY)
         ct_score, ts_score = None, None
 
