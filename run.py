@@ -31,7 +31,7 @@ def hlds_event_machine(event, groups):
         gpio.on(CT_LIGHT)
     elif event == 'team_ts_win_round':
         gpio.on(TS_LIGHT)
-    elif event == 'round_end':
+    elif event == 'round_start':
         gpio.off(CT_LIGHT)
         gpio.off(TS_LIGHT)
         gpio.off(PARTY)
