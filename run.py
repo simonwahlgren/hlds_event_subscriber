@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3
 import dill
 import logging
 import os
@@ -13,8 +13,8 @@ logger.addHandler(console)
 
 from gpio import RPiGPIO
 gpio = RPiGPIO()
-CT_LIGHT = 19
-TS_LIGHT = 26
+CT_LIGHT = 26
+TS_LIGHT = 19
 
 redis = StrictRedis(os.getenv('REDIS_HOST', 'localhost'))
 redis_pubsub = redis.pubsub(ignore_subscribe_messages=True)
@@ -57,7 +57,7 @@ if __name__ == '__main__':
         if message:
             data = dill.loads(message['data'])
             event, groups = data
-            logger.info(f"Received event {event} with data {groups}")
+            logger.info("Received event %s with data %s" % (event, groups))
             hlds_event_machine(event, groups)
 
         time.sleep(0.1)
