@@ -15,6 +15,7 @@ from gpio import RPiGPIO
 gpio = RPiGPIO()
 CT_LIGHT = 26
 TS_LIGHT = 19
+PARTY = 13
 
 redis = StrictRedis(os.getenv('REDIS_HOST', 'localhost'))
 redis_pubsub = redis.pubsub(ignore_subscribe_messages=True)
@@ -28,12 +29,13 @@ def hlds_event_machine(event, groups):
 
     if event == 'team_cts_win_round':
         gpio.on(CT_LIGHT)
-    elif event == 'team_ts_win_game':
+    elif event == 'team_ts_win_round':
         gpio.on(TS_LIGHT)
     elif event == 'round_end':
         gpio.off(CT_LIGHT)
         gpio.off(TS_LIGHT)
-    elif event == 'team_cts_win_round':
+        gpio.off(PARTY)
+    elif event == 'team_cts_win_game':
         score, _ = groups
         ct_score = int(score.decode('utf-8'))
     elif event == 'team_ts_win_game':
@@ -47,6 +49,7 @@ def hlds_event_machine(event, groups):
         else:
             gpio.on(TS_LIGHT)
             logger.info("Team TERRORIST won game with %d - %d" % (ts_score, ct_score))
+        gpio.on(PARTY)
         ct_score, ts_score = None, None
 
 
